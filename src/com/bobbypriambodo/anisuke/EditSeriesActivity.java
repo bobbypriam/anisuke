@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * @author Bobby Priambodo
@@ -39,10 +40,15 @@ public class EditSeriesActivity extends Activity {
 			// For done action item and menu
 			case R.id.action_done:
 			case DONE_ID:
-				setResult(RESULT_OK);
-				finish();
+				done();
 				return true;
 		}
 		return super.onMenuItemSelected(featureId, item);
+	}
+
+	public void done() {
+		Toast.makeText(this, "Series successfully saved.", Toast.LENGTH_SHORT).show();
+		setResult(RESULT_OK);
+		finish();
 	}
 }
