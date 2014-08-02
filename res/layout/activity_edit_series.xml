@@ -9,8 +9,7 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/series_edit_title"
-		android:textSize="20sp"/>
+		android:text="@string/series_edit_title"/>
 
 	<EditText
 		android:layout_width="match_parent"
@@ -20,8 +19,7 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/series_edit_episode"
-		android:textSize="20sp"/>
+		android:text="@string/series_edit_episode"/>
 
 	<EditText
 		android:layout_width="match_parent"
