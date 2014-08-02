@@ -2,9 +2,12 @@ package com.bobbypriambodo.anisuke;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.bobbypriambodo.anisuke.adapter.TabsPagerAdapter;
 
 /**
@@ -12,10 +15,30 @@ import com.bobbypriambodo.anisuke.adapter.TabsPagerAdapter;
  */
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
+	/*
+	 * Activity code constants.
+	 */
+	private static final int ACTIVITY_CREATE = 0;
+
+	/*
+	 * Menu constant IDs.
+	 */
+	private static final int ADD_ID = Menu.FIRST;
+	private static final int ABOUT_ID = Menu.FIRST + 1;
+
+	/*
+	 * PagerAdapter for the tabs.
+	 */
 	private TabsPagerAdapter mTabsPagerAdapter;
 
+	/*
+	 * The ViewPager.
+	 */
 	private ViewPager mViewPager;
 
+	/*
+	 * Array of string containing the tabs' titles.
+	 */
 	private String[] tabs = { "Following", "Bucket" };
 
 	@Override
@@ -47,6 +70,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, ADD_ID, 0, R.string.menu_add);
+		menu.add(0, ABOUT_ID, 1, R.string.menu_about);
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+			case ADD_ID:
+				addSeries();
+				return true;
+			case ABOUT_ID:
+				showAbout();
+				return true;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+
+	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 		mViewPager.setCurrentItem(tab.getPosition());
 	}
@@ -56,4 +100,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}
+
+	private void addSeries() {
+		Intent i = new Intent(this, EditSeriesActivity.class);
+		startActivityForResult(i, ACTIVITY_CREATE);
+	}
+
+	private void showAbout() {
+		Intent i = new Intent(this, AboutActivity.class);
+		startActivity(i);
+	}
 }
