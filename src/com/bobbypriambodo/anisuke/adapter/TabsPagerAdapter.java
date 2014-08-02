@@ -18,6 +18,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		switch (i) {
 			case 0: return null; // return FollowingFragment();
 			case 1: return null; // return BucketFragment();
+			default: return null;
 		}
 	}
 
