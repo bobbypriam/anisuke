@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.bobbypriambodo.anisuke.adapter.TabsPagerAdapter;
 
@@ -71,18 +72,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
+		// Add Action Items
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.actions_main_activity, menu);
+
+		// Add options menu
 		menu.add(0, ADD_ID, 0, R.string.menu_add);
 		menu.add(0, ABOUT_ID, 1, R.string.menu_about);
-		return true;
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
+			// For add action item and menu
+			case R.id.action_add:
 			case ADD_ID:
 				addSeries();
 				return true;
+
+			// For about menu
 			case ABOUT_ID:
 				showAbout();
 				return true;

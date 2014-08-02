@@ -9,7 +9,11 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".EditSeriesActivity" android:label="@string/label_edit"/>
-		<activity android:name=".AboutActivity" android:label="@string/label_about"/>
+		<activity android:name=".EditSeriesActivity" android:label="@string/label_edit" android:parentActivityName=".MainActivity">
+			<meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity" />
+		</activity>
+		<activity android:name=".AboutActivity" android:label="@string/label_about" android:parentActivityName=".MainActivity">
+			<meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity" />
+		</activity>
 	</application>
 </manifest>
