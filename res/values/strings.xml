@@ -14,5 +14,8 @@
 
 	<string name="about">Anisuke! (Anime Scheduler) is an Android app for managing your anime download list. I am developing this app in my free time as a practice on making Android applications (and to help my own problems, that is).</string>
 	<string name="empty_following">You are not following any series right now.</string>
+	<string name="menu_bucket">Add to Bucket</string>
+	<string name="menu_edit">Edit Series</string>
+	<string name="menu_delete">Delete Series</string>
 
 </resources>

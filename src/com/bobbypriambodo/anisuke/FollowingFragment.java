@@ -8,13 +8,14 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.bobbypriambodo.anisuke.adapter.AnisukeCursorAdapter;
 import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
 import com.bobbypriambodo.anisuke.database.SeriesTable;
+import com.bobbypriambodo.anisuke.service.AnisukeIntentService;
 
 /**
  * @author Bobby Priambodo
@@ -22,6 +23,10 @@ import com.bobbypriambodo.anisuke.database.SeriesTable;
 public class FollowingFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 	private static final int ACTIVITY_EDIT = 1;
+
+	private static final int BUCKET_ID = Menu.FIRST + 2;
+	private static final int EDIT_ID = Menu.FIRST + 3;
+	private static final int DELETE_ID = Menu.FIRST + 4;
 
 	private Context mCtx;
 	private AnisukeCursorAdapter mAdapter;
@@ -35,6 +40,7 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		mCtx = getActivity();
+		registerForContextMenu(getListView());
 		fillData();
 	}
 
@@ -50,16 +56,51 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 		editSeries(id);
 	}
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, BUCKET_ID, 0, R.string.menu_bucket);
+		menu.add(0, EDIT_ID, 1, R.string.menu_edit);
+		menu.add(0, DELETE_ID, 2, R.string.menu_delete);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		long id = info.id;
+		switch (item.getItemId()) {
+			case BUCKET_ID:
+				// addToBucket(id);
+				return true;
+			case EDIT_ID:
+				editSeries(id);
+				return true;
+			case DELETE_ID:
+				deleteSeries(id);
+				return true;
+		}
+		return super.onContextItemSelected(item);
+	}
+
 	private void editSeries(long id) {
 		Intent i = new Intent(mCtx, EditSeriesActivity.class);
 		i.putExtra(SeriesTable.COL_ID, id);
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
+	private void deleteSeries(long id) {
+		Intent i = new Intent(mCtx, AnisukeIntentService.class);
+		i.putExtra(SeriesTable.COL_ID, id);
+		i.setAction(AnisukeIntentService.ACTION_DELETE_SERIES);
+		mCtx.startService(i);
+
+		Toast.makeText(mCtx, "Successfully deleted series.", Toast.LENGTH_SHORT).show();
+	}
+
 	@Override
 	 public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		String[] projection = { SeriesTable.COL_ID, SeriesTable.COL_TITLE, SeriesTable.COL_EPISODE };
-		return new CursorLoader(mCtx, AnisukeContentProvider.CONTENT_URI_FOLLOWING, projection, null, null, null);
+		return new CursorLoader(mCtx, AnisukeContentProvider.CONTENT_URI_FOLLOWING, projection, null, null, SeriesTable.COL_TITLE);
 	}
 
 	@Override

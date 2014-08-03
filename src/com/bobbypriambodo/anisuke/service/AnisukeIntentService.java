@@ -57,7 +57,13 @@ public class AnisukeIntentService extends IntentService {
 	}
 
 	private void onActionDeleteSeries(Intent intent) {
+		long seriesId = intent.getLongExtra(SeriesTable.COL_ID, -1);
+		if (seriesId == -1)
+			throw new IllegalStateException("Cannot update record with seriesId == -1");
 
+		Uri delUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, seriesId);
+		ContentResolver resolver = getContentResolver();
+		resolver.delete(delUri, null, null);
 	}
 
 	private void onActionUpdateSeries(Intent intent) {
@@ -74,9 +80,8 @@ public class AnisukeIntentService extends IntentService {
 		values.put(SeriesTable.COL_EPISODE, episode);
 		values.put(SeriesTable.COL_BUCKET, bucket);
 
-		ContentResolver resolver = getContentResolver();
 		Uri updateUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, seriesId);
-		int updateCount = resolver.update(updateUri, values, null, null);
-		Log.d(this.getClass().getName(), "Updated " + updateCount + " rows");
+		ContentResolver resolver = getContentResolver();
+		resolver.update(updateUri, values, null, null);
 	}
 }

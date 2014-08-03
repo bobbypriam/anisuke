@@ -127,15 +127,12 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
-		Log.d(this.getClass().getName(), "Got into method.");
-		Log.d(this.getClass().getName(), "URI_MATCHER match: " + URI_MATCHER.match(uri));
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_LIST:
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
 				selection = SeriesTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
-				Log.d(this.getClass().getName(), "Selection: " + selection);
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
