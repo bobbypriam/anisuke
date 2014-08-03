@@ -46,6 +46,7 @@ public class AnisukeIntentService extends IntentService {
 		ContentValues values = new ContentValues();
 		values.put(SeriesTable.COL_TITLE, title);
 		values.put(SeriesTable.COL_EPISODE, episode);
+		values.put(SeriesTable.COL_BUCKET, 0);
 
 		ContentResolver resolver = getContentResolver();
 		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
