@@ -2,8 +2,10 @@ package com.bobbypriambodo.anisuke.service;
 
 import android.app.IntentService;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
 import com.bobbypriambodo.anisuke.database.SeriesTable;
@@ -72,6 +74,7 @@ public class AnisukeIntentService extends IntentService {
 		values.put(SeriesTable.COL_BUCKET, bucket);
 
 		ContentResolver resolver = getContentResolver();
-		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
+		Uri updateUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, seriesId);
+		resolver.update(updateUri, values, null, null);
 	}
 }
