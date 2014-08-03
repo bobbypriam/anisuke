@@ -1,7 +1,12 @@
 package com.bobbypriambodo.anisuke.service;
 
 import android.app.IntentService;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.text.TextUtils;
+import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
+import com.bobbypriambodo.anisuke.database.SeriesTable;
 
 /**
  * @author Bobby Priambodo
@@ -32,7 +37,18 @@ public class AnisukeIntentService extends IntentService {
 	}
 
 	private void onActionCreateSeries(Intent intent) {
+		String title = intent.getStringExtra(SeriesTable.COL_TITLE);
+		String episode = intent.getStringExtra(SeriesTable.COL_EPISODE);
 
+		if (TextUtils.isEmpty(title) && TextUtils.isEmpty(episode))
+			return;
+
+		ContentValues values = new ContentValues();
+		values.put(SeriesTable.COL_TITLE, title);
+		values.put(SeriesTable.COL_EPISODE, episode);
+
+		ContentResolver resolver = getContentResolver();
+		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
 	}
 
 	private void onActionDeleteSeries(Intent intent) {
@@ -40,6 +56,6 @@ public class AnisukeIntentService extends IntentService {
 	}
 
 	private void onActionUpdateSeries(Intent intent) {
-		
+
 	}
 }

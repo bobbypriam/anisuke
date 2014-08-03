@@ -12,6 +12,7 @@
 		android:text="@string/series_edit_title"/>
 
 	<EditText
+		android:id="@+id/edit_title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:inputType="text"/>
@@ -22,6 +23,7 @@
 		android:text="@string/series_edit_episode"/>
 
 	<EditText
+		android:id="@+id/edit_episode"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:inputType="number" />
