@@ -42,7 +42,7 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 
 	@Override
 	 public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-		String[] projection = { SeriesTable.COL_TITLE, SeriesTable.COL_EPISODE };
+		String[] projection = { SeriesTable.COL_ID, SeriesTable.COL_TITLE, SeriesTable.COL_EPISODE };
 		CursorLoader cursorLoader = new CursorLoader(mCtx, AnisukeContentProvider.CONTENT_URI_FOLLOWING, projection, null, null, null);
 		return cursorLoader;
 	}

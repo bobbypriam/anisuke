@@ -17,14 +17,14 @@ public class SeriesTable {
 
 
 	/** Database creation statement */
-	private static final String DATABASE_CREATE = "create table"
+	private static final String DATABASE_CREATE = "create table "
 			+ TABLE_NAME
-			+ "("
+			+ "( "
 			+ COL_ID		+ " integer primary key autoincrement,"
 			+ COL_TITLE		+ " text not null,"
 			+ COL_EPISODE	+ " integer not null,"
 			+ COL_BUCKET	+ " integer not null"
-			+ ");";
+			+ " );";
 
 	public static void onCreate(SQLiteDatabase database) {
 		database.execSQL(DATABASE_CREATE);
