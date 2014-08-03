@@ -43,7 +43,7 @@ public class EditSeriesActivity extends Activity implements LoaderManager.Loader
 		if (i.hasExtra(SeriesTable.COL_ID))
 			mSeriesId = i.getLongExtra(SeriesTable.COL_ID, -1);
 
-		Log.d("Debug", "Series ID: " + mSeriesId);
+		Log.d(this.getClass().getName(), "Series ID: " + mSeriesId);
 
 		if (mSeriesId != -1)
 			getLoaderManager().initLoader(1, null, this);
@@ -82,13 +82,13 @@ public class EditSeriesActivity extends Activity implements LoaderManager.Loader
 		intent.putExtra(SeriesTable.COL_EPISODE, mEpisode.getText().toString());
 		intent.putExtra(SeriesTable.COL_BUCKET, mBucket);
 
-		Log.d("Debug", "Series ID: " + mSeriesId);
+		Log.d(this.getClass().getName(), "Series ID: " + mSeriesId);
 
 		if (mSeriesId == -1) {
-			Log.d("Debug", "CREATE");
+			Log.d(this.getClass().getName(), "CREATE");
 			intent.setAction(AnisukeIntentService.ACTION_CREATE_SERIES);
 		} else {
-			Log.d("Debug", "UPDATE");
+			Log.d(this.getClass().getName(), "UPDATE");
 			intent.putExtra(SeriesTable.COL_ID, mSeriesId);
 			intent.setAction(AnisukeIntentService.ACTION_UPDATE_SERIES);
 		}

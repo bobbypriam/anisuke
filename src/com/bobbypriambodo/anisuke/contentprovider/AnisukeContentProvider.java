@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import com.bobbypriambodo.anisuke.database.DatabaseHelper;
 import com.bobbypriambodo.anisuke.database.SeriesTable;
 
@@ -113,7 +114,7 @@ public class AnisukeContentProvider extends ContentProvider {
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
-				selection = SeriesTable.COL_ID + "=" + id + (TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				selection = SeriesTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -126,12 +127,15 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		Log.d(this.getClass().getName(), "Got into method.");
+		Log.d(this.getClass().getName(), "URI_MATCHER match: " + URI_MATCHER.match(uri));
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_LIST:
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
-				selection = SeriesTable.COL_ID + "=" + id + (TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				selection = SeriesTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				Log.d(this.getClass().getName(), "Selection: " + selection);
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);

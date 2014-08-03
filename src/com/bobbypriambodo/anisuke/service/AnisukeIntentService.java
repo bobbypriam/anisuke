@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
 import com.bobbypriambodo.anisuke.database.SeriesTable;
 
@@ -75,6 +76,7 @@ public class AnisukeIntentService extends IntentService {
 
 		ContentResolver resolver = getContentResolver();
 		Uri updateUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, seriesId);
-		resolver.update(updateUri, values, null, null);
+		int updateCount = resolver.update(updateUri, values, null, null);
+		Log.d(this.getClass().getName(), "Updated " + updateCount + " rows");
 	}
 }
