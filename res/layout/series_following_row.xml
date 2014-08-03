@@ -7,25 +7,16 @@
 			  android:padding="10dp">
 
 	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/series_edit_title"/>
-
-	<EditText
-		android:id="@+id/edit_title"
+		android:id="@+id/title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:inputType="text"/>
+		android:text="Tonari no Kaibutsu-kun"
+		android:textSize="24sp"/>
 
 	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/series_edit_episode"/>
-
-	<EditText
-		android:id="@+id/edit_episode"
+		android:id="@+id/description"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:inputType="number" />
+		android:text="Episode 1" />
 
 </LinearLayout>
