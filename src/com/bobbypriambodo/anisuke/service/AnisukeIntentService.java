@@ -39,6 +39,7 @@ public class AnisukeIntentService extends IntentService {
 	private void onActionCreateSeries(Intent intent) {
 		String title = intent.getStringExtra(SeriesTable.COL_TITLE);
 		String episode = intent.getStringExtra(SeriesTable.COL_EPISODE);
+		int bucket = intent.getIntExtra(SeriesTable.COL_BUCKET, 0);
 
 		if (TextUtils.isEmpty(title) && TextUtils.isEmpty(episode))
 			return;
@@ -46,7 +47,7 @@ public class AnisukeIntentService extends IntentService {
 		ContentValues values = new ContentValues();
 		values.put(SeriesTable.COL_TITLE, title);
 		values.put(SeriesTable.COL_EPISODE, episode);
-		values.put(SeriesTable.COL_BUCKET, 0);
+		values.put(SeriesTable.COL_BUCKET, bucket);
 
 		ContentResolver resolver = getContentResolver();
 		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
@@ -57,6 +58,20 @@ public class AnisukeIntentService extends IntentService {
 	}
 
 	private void onActionUpdateSeries(Intent intent) {
+		long seriesId = intent.getLongExtra(SeriesTable.COL_ID, -1);
+		if (seriesId == -1)
+			throw new IllegalStateException("Cannot update record with seriesId == -1");
 
+		String title = intent.getStringExtra(SeriesTable.COL_TITLE);
+		String episode = intent.getStringExtra(SeriesTable.COL_EPISODE);
+		int bucket = intent.getIntExtra(SeriesTable.COL_BUCKET, 0);
+
+		ContentValues values = new ContentValues();
+		values.put(SeriesTable.COL_TITLE, title);
+		values.put(SeriesTable.COL_EPISODE, episode);
+		values.put(SeriesTable.COL_BUCKET, bucket);
+
+		ContentResolver resolver = getContentResolver();
+		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
 	}
 }

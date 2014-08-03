@@ -1,26 +1,34 @@
 package com.bobbypriambodo.anisuke;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.ContentUris;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
 import com.bobbypriambodo.anisuke.database.SeriesTable;
 import com.bobbypriambodo.anisuke.service.AnisukeIntentService;
 
 /**
  * @author Bobby Priambodo
  */
-public class EditSeriesActivity extends Activity {
+public class EditSeriesActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 	/*
 	 * Menu constant IDs.
 	 */
 	private static final int DONE_ID = Menu.FIRST;
 
 	private long mSeriesId = -1;
+	private int mBucket = 0;
 
 	private EditText mTitle;
 	private EditText mEpisode;
@@ -29,6 +37,13 @@ public class EditSeriesActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_series);
+
+		Intent i = getIntent();
+		if (i.hasExtra(SeriesTable.COL_ID))
+			mSeriesId = i.getLongExtra(SeriesTable.COL_ID, -1);
+
+		if (mSeriesId != -1)
+			getLoaderManager().initLoader(1, null, this);
 
 		mTitle = (EditText) findViewById(R.id.edit_title);
 		mEpisode = (EditText) findViewById(R.id.edit_episode);
@@ -62,6 +77,7 @@ public class EditSeriesActivity extends Activity {
 		Intent intent = new Intent(this, AnisukeIntentService.class);
 		intent.putExtra(SeriesTable.COL_TITLE, mTitle.getText().toString());
 		intent.putExtra(SeriesTable.COL_EPISODE, mEpisode.getText().toString());
+		intent.putExtra(SeriesTable.COL_BUCKET, mBucket);
 
 		if (mSeriesId == -1) {
 			intent.setAction(AnisukeIntentService.ACTION_CREATE_SERIES);
@@ -74,5 +90,25 @@ public class EditSeriesActivity extends Activity {
 		Toast.makeText(this, "Series successfully saved.", Toast.LENGTH_SHORT).show();
 		setResult(RESULT_OK);
 		finish();
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+		Uri loaderUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, mSeriesId);
+		return new CursorLoader(this, loaderUri, SeriesTable.PROJECTION_ALL, null, null, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+		if (cursor != null && cursor.moveToFirst()) {
+			mTitle.setText(cursor.getString(cursor.getColumnIndex(SeriesTable.COL_TITLE)));
+			mEpisode.setText(cursor.getString(cursor.getColumnIndex(SeriesTable.COL_EPISODE)));
+			mBucket = cursor.getInt(cursor.getColumnIndex(SeriesTable.COL_BUCKET));
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> cursorLoader) {
+
 	}
 }

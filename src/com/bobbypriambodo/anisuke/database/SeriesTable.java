@@ -15,6 +15,7 @@ public class SeriesTable {
 	public static final String COL_EPISODE		= "episode";
 	public static final String COL_BUCKET		= "bucket";
 
+	public static final String[] PROJECTION_ALL = new String[] { COL_ID, COL_TITLE, COL_EPISODE, COL_BUCKET };
 
 	/** Database creation statement */
 	private static final String DATABASE_CREATE = "create table "
