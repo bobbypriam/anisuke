@@ -32,6 +32,8 @@ public class AnisukeContentProvider extends ContentProvider {
 
 	// The content provider's ContentURI.
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+	public static final Uri CONTENT_URI_FOLLOWING = Uri.parse("content://" + AUTHORITY + "/" + FOLLOWING_PATH);
+	public static final Uri CONTENT_URI_BUCKET = Uri.parse("content://" + AUTHORITY + "/" + BUCKET_PATH);
 
 	// UriMatcher initialization and definitions.
 	private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
