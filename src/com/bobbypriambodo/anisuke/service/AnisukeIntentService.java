@@ -22,7 +22,7 @@ public class AnisukeIntentService extends IntentService {
 	public static final String ACTION_DELETE_SERIES 		= "actionDeleteSeries";
 	public static final String ACTION_UPDATE_SERIES 		= "actionUpdateSeries";
 	public static final String ACTION_ADD_TO_BUCKET 		= "actionAddToBucket";
-	public static final String ACTION_DELETE_FROM_BUCKET 	= "actionAddToBucket";
+	public static final String ACTION_DELETE_FROM_BUCKET 	= "actionDeleteFromBucket";
 
 	public AnisukeIntentService() {
 		super("AnisukeIntentService");

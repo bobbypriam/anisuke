@@ -132,7 +132,6 @@ public class AnisukeContentProvider extends ContentProvider {
 			case BUCKET_ID:
 				id = uri.getLastPathSegment();
 				selection = BucketTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
-				break;
 			case BUCKET_LIST:
 				tableName = BucketTable.TABLE_NAME;
 				break;

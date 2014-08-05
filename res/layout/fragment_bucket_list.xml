@@ -5,10 +5,20 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent">
 
-	<TextView android:layout_width="match_parent"
-			  android:layout_height="match_parent"
-			  android:text="Bucket"
-			  android:textSize="30sp"
-			  android:gravity="center"/>
+	<ListView
+		android:id="@id/android:list"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	</ListView>
+
+	<TextView
+		android:id="@id/android:empty"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:text="@string/empty_bucket"
+		android:textSize="22sp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginRight="20dp"
+		android:gravity="center" />
 
 </LinearLayout>
