@@ -10,9 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import com.bobbypriambodo.anisuke.database.DatabaseHelper;
-import com.bobbypriambodo.anisuke.database.SeriesTable;
+import com.bobbypriambodo.anisuke.database.FollowingTable;
 
 /**
  * @author Bobby Priambodo
@@ -69,17 +68,17 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		queryBuilder.setTables(SeriesTable.TABLE_NAME);
+		queryBuilder.setTables(FollowingTable.TABLE_NAME);
 
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_LIST:
 				break;
 			case BUCKET_LIST:
-				queryBuilder.appendWhere(SeriesTable.COL_BUCKET + "=" + 1);
+				queryBuilder.appendWhere(FollowingTable.COL_BUCKET + "=" + 1);
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
-				queryBuilder.appendWhere(SeriesTable.COL_ID + "=" + id);
+				queryBuilder.appendWhere(FollowingTable.COL_ID + "=" + id);
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -100,7 +99,7 @@ public class AnisukeContentProvider extends ContentProvider {
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
-		long id = db.insert(SeriesTable.TABLE_NAME, null, values);
+		long id = db.insert(FollowingTable.TABLE_NAME, null, values);
 		Uri insertUri = ContentUris.withAppendedId(uri, id);
 		getContext().getContentResolver().notifyChange(insertUri, null);
 		return insertUri;
@@ -114,12 +113,12 @@ public class AnisukeContentProvider extends ContentProvider {
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
-				selection = SeriesTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				selection = FollowingTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
-		int deleteCount = db.delete(SeriesTable.TABLE_NAME, selection, selectionArgs);
+		int deleteCount = db.delete(FollowingTable.TABLE_NAME, selection, selectionArgs);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return deleteCount;
 	}
@@ -132,12 +131,12 @@ public class AnisukeContentProvider extends ContentProvider {
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
-				selection = SeriesTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				selection = FollowingTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
-		int updateCount = db.update(SeriesTable.TABLE_NAME, values, selection, selectionArgs);
+		int updateCount = db.update(FollowingTable.TABLE_NAME, values, selection, selectionArgs);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return updateCount;
 	}

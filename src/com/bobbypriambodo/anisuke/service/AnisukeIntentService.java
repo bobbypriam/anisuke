@@ -7,9 +7,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
-import com.bobbypriambodo.anisuke.database.SeriesTable;
+import com.bobbypriambodo.anisuke.database.FollowingTable;
 
 /**
  * @author Bobby Priambodo
@@ -40,24 +39,24 @@ public class AnisukeIntentService extends IntentService {
 	}
 
 	private void onActionCreateSeries(Intent intent) {
-		String title = intent.getStringExtra(SeriesTable.COL_TITLE);
-		String episode = intent.getStringExtra(SeriesTable.COL_EPISODE);
-		int bucket = intent.getIntExtra(SeriesTable.COL_BUCKET, 0);
+		String title = intent.getStringExtra(FollowingTable.COL_TITLE);
+		String episode = intent.getStringExtra(FollowingTable.COL_EPISODE);
+		int bucket = intent.getIntExtra(FollowingTable.COL_BUCKET, 0);
 
 		if (TextUtils.isEmpty(title) && TextUtils.isEmpty(episode))
 			return;
 
 		ContentValues values = new ContentValues();
-		values.put(SeriesTable.COL_TITLE, title);
-		values.put(SeriesTable.COL_EPISODE, episode);
-		values.put(SeriesTable.COL_BUCKET, bucket);
+		values.put(FollowingTable.COL_TITLE, title);
+		values.put(FollowingTable.COL_EPISODE, episode);
+		values.put(FollowingTable.COL_BUCKET, bucket);
 
 		ContentResolver resolver = getContentResolver();
 		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
 	}
 
 	private void onActionDeleteSeries(Intent intent) {
-		long seriesId = intent.getLongExtra(SeriesTable.COL_ID, -1);
+		long seriesId = intent.getLongExtra(FollowingTable.COL_ID, -1);
 		if (seriesId == -1)
 			throw new IllegalStateException("Cannot update record with seriesId == -1");
 
@@ -67,18 +66,18 @@ public class AnisukeIntentService extends IntentService {
 	}
 
 	private void onActionUpdateSeries(Intent intent) {
-		long seriesId = intent.getLongExtra(SeriesTable.COL_ID, -1);
+		long seriesId = intent.getLongExtra(FollowingTable.COL_ID, -1);
 		if (seriesId == -1)
 			throw new IllegalStateException("Cannot update record with seriesId == -1");
 
-		String title = intent.getStringExtra(SeriesTable.COL_TITLE);
-		String episode = intent.getStringExtra(SeriesTable.COL_EPISODE);
-		int bucket = intent.getIntExtra(SeriesTable.COL_BUCKET, 0);
+		String title = intent.getStringExtra(FollowingTable.COL_TITLE);
+		String episode = intent.getStringExtra(FollowingTable.COL_EPISODE);
+		int bucket = intent.getIntExtra(FollowingTable.COL_BUCKET, 0);
 
 		ContentValues values = new ContentValues();
-		values.put(SeriesTable.COL_TITLE, title);
-		values.put(SeriesTable.COL_EPISODE, episode);
-		values.put(SeriesTable.COL_BUCKET, bucket);
+		values.put(FollowingTable.COL_TITLE, title);
+		values.put(FollowingTable.COL_EPISODE, episode);
+		values.put(FollowingTable.COL_BUCKET, bucket);
 
 		Uri updateUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, seriesId);
 		ContentResolver resolver = getContentResolver();
