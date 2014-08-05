@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.bobbypriambodo.anisuke.adapter.AnisukeCursorAdapter;
 import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
-import com.bobbypriambodo.anisuke.database.SeriesTable;
+import com.bobbypriambodo.anisuke.database.FollowingTable;
 import com.bobbypriambodo.anisuke.service.AnisukeIntentService;
 
 /**
@@ -84,13 +84,13 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 
 	private void editSeries(long id) {
 		Intent i = new Intent(mCtx, EditSeriesActivity.class);
-		i.putExtra(SeriesTable.COL_ID, id);
+		i.putExtra(FollowingTable.COL_ID, id);
 		startActivityForResult(i, ACTIVITY_EDIT);
 	}
 
 	private void deleteSeries(long id) {
 		Intent i = new Intent(mCtx, AnisukeIntentService.class);
-		i.putExtra(SeriesTable.COL_ID, id);
+		i.putExtra(FollowingTable.COL_ID, id);
 		i.setAction(AnisukeIntentService.ACTION_DELETE_SERIES);
 		mCtx.startService(i);
 
@@ -99,8 +99,8 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 
 	@Override
 	 public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-		String[] projection = { SeriesTable.COL_ID, SeriesTable.COL_TITLE, SeriesTable.COL_EPISODE };
-		return new CursorLoader(mCtx, AnisukeContentProvider.CONTENT_URI_FOLLOWING, projection, null, null, SeriesTable.COL_TITLE);
+		String[] projection = { FollowingTable.COL_ID, FollowingTable.COL_TITLE, FollowingTable.COL_EPISODE };
+		return new CursorLoader(mCtx, AnisukeContentProvider.CONTENT_URI_FOLLOWING, projection, null, null, FollowingTable.COL_TITLE);
 	}
 
 	@Override
