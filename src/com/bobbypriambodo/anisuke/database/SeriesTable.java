@@ -13,9 +13,8 @@ public class SeriesTable {
 	public static final String COL_ID			= "_id";
 	public static final String COL_TITLE		= "title";
 	public static final String COL_EPISODE		= "episode";
-	public static final String COL_BUCKET		= "bucket";
 
-	public static final String[] PROJECTION_ALL = new String[] { COL_ID, COL_TITLE, COL_EPISODE, COL_BUCKET };
+	public static final String[] PROJECTION_ALL = new String[] { COL_ID, COL_TITLE, COL_EPISODE, };
 
 	/** Database creation statement */
 	private static final String DATABASE_CREATE = "create table "
@@ -23,8 +22,7 @@ public class SeriesTable {
 			+ "( "
 			+ COL_ID		+ " integer primary key autoincrement,"
 			+ COL_TITLE		+ " text not null,"
-			+ COL_EPISODE	+ " integer not null,"
-			+ COL_BUCKET	+ " integer not null"
+			+ COL_EPISODE	+ " integer not null"
 			+ " );";
 
 	public static void onCreate(SQLiteDatabase database) {

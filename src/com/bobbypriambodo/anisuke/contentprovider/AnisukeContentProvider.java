@@ -75,7 +75,6 @@ public class AnisukeContentProvider extends ContentProvider {
 			case FOLLOWING_LIST:
 				break;
 			case BUCKET_LIST:
-				queryBuilder.appendWhere(SeriesTable.COL_BUCKET + "=" + 1);
 				break;
 			case FOLLOWING_ID:
 				String id = uri.getLastPathSegment();
