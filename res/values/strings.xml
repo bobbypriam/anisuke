@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Anisuke!</string>
+
+	<string name="app_name">AniSuke!</string>
+	<string name="label_edit">Edit Series</string>
+	<string name="label_about">About AniSuke!</string>
+
+	<string name="menu_add">Add Series</string>
+	<string name="menu_about">About</string>
+	<string name="menu_done">Done!</string>
+
+	<string name="series_edit_title">Title</string>
+	<string name="series_edit_episode">Episode</string>
+
+	<string name="about_first">AniSuke! (Anime Scheduler) is an Android app for managing your anime download list.</string>
+	<string name="about_second">I am developing this app in my free time as a practice on making Android applications.</string>
+
+	<string name="empty_following">You are not following any series right now.</string>
+	<string name="menu_bucket">Add to Bucket</string>
+	<string name="menu_edit">Edit Series</string>
+	<string name="menu_delete">Delete Series</string>
+	<string name="about_third">Hope you will enjoy it.</string>
+	<string name="about_name">Bobby</string>
+	<string name="menu_delete_bucket">Delete Entry</string>
+	<string name="empty_bucket">Your bucket is empty. Yeay!</string>
+
 </resources>
