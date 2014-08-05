@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import com.bobbypriambodo.anisuke.database.BucketTable;
 import com.bobbypriambodo.anisuke.database.DatabaseHelper;
 import com.bobbypriambodo.anisuke.database.FollowingTable;
 
@@ -22,6 +23,7 @@ public class AnisukeContentProvider extends ContentProvider {
 	private static final int FOLLOWING_LIST	= 1;
 	private static final int FOLLOWING_ID	= 2;
 	private static final int BUCKET_LIST	= 3;
+	private static final int BUCKET_ID		= 4;
 
 	// Authority for this provider.
 	private static final String AUTHORITY = "com.bobbypriambodo.anisuke.contentprovider";
@@ -41,6 +43,7 @@ public class AnisukeContentProvider extends ContentProvider {
 		URI_MATCHER.addURI(AUTHORITY, FOLLOWING_PATH, FOLLOWING_LIST);
 		URI_MATCHER.addURI(AUTHORITY, FOLLOWING_PATH + "/#", FOLLOWING_ID);
 		URI_MATCHER.addURI(AUTHORITY, BUCKET_PATH, BUCKET_LIST);
+		URI_MATCHER.addURI(AUTHORITY, BUCKET_PATH + "/#", BUCKET_ID);
 	}
 
 	private DatabaseHelper mDbHelper;
@@ -60,6 +63,8 @@ public class AnisukeContentProvider extends ContentProvider {
 				return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.bobbypriambodo.anisuke.anisuke_following";
 			case BUCKET_LIST:
 				return ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.bobbypriambodo.anisuke.anisuke_bucket";
+			case BUCKET_ID:
+				return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.bobbypriambodo.anisuke.anisuke_bucket";
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
@@ -68,17 +73,20 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		queryBuilder.setTables(FollowingTable.TABLE_NAME);
 
+		String id = "";
 		switch (URI_MATCHER.match(uri)) {
-			case FOLLOWING_LIST:
-				break;
-			case BUCKET_LIST:
-				queryBuilder.appendWhere(FollowingTable.COL_BUCKET + "=" + 1);
-				break;
 			case FOLLOWING_ID:
-				String id = uri.getLastPathSegment();
+				id = uri.getLastPathSegment();
 				queryBuilder.appendWhere(FollowingTable.COL_ID + "=" + id);
+			case FOLLOWING_LIST:
+				queryBuilder.setTables(FollowingTable.TABLE_NAME);
+				break;
+			case BUCKET_ID:
+				id = uri.getLastPathSegment();
+				queryBuilder.appendWhere(BucketTable.COL_ID + "=" + id);
+			case BUCKET_LIST:
+				queryBuilder.setTables(BucketTable.TABLE_NAME);
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -93,13 +101,18 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		String tableName;
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_LIST:
+				tableName = FollowingTable.TABLE_NAME;
+				break;
+			case BUCKET_LIST:
+				tableName = BucketTable.TABLE_NAME;
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
-		long id = db.insert(FollowingTable.TABLE_NAME, null, values);
+		long id = db.insert(tableName, null, values);
 		Uri insertUri = ContentUris.withAppendedId(uri, id);
 		getContext().getContentResolver().notifyChange(insertUri, null);
 		return insertUri;
@@ -108,17 +121,28 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		String id, tableName;
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_LIST:
+				tableName = FollowingTable.TABLE_NAME;
 				break;
 			case FOLLOWING_ID:
-				String id = uri.getLastPathSegment();
+				tableName = FollowingTable.TABLE_NAME;
+				id = uri.getLastPathSegment();
 				selection = FollowingTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				break;
+			case BUCKET_LIST:
+				tableName = BucketTable.TABLE_NAME;
+				break;
+			case BUCKET_ID:
+				tableName = BucketTable.TABLE_NAME;
+				id = uri.getLastPathSegment();
+				selection = BucketTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
-		int deleteCount = db.delete(FollowingTable.TABLE_NAME, selection, selectionArgs);
+		int deleteCount = db.delete(tableName, selection, selectionArgs);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return deleteCount;
 	}
@@ -126,17 +150,28 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		String id, tableName;
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_LIST:
+				tableName = FollowingTable.TABLE_NAME;
 				break;
 			case FOLLOWING_ID:
-				String id = uri.getLastPathSegment();
+				tableName = FollowingTable.TABLE_NAME;
+				id = uri.getLastPathSegment();
 				selection = FollowingTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
+				break;
+			case BUCKET_LIST:
+				tableName = BucketTable.TABLE_NAME;
+				break;
+			case BUCKET_ID:
+				tableName = BucketTable.TABLE_NAME;
+				id = uri.getLastPathSegment();
+				selection = BucketTable.COL_ID + "=" + id + (!TextUtils.isEmpty(selection) ? " and (" + selection + ")" : "");
 				break;
 			default:
 				throw new IllegalArgumentException("Unsupported URI: " + uri);
 		}
-		int updateCount = db.update(FollowingTable.TABLE_NAME, values, selection, selectionArgs);
+		int updateCount = db.update(tableName, values, selection, selectionArgs);
 		getContext().getContentResolver().notifyChange(uri, null);
 		return updateCount;
 	}

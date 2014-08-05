@@ -16,9 +16,11 @@ import com.bobbypriambodo.anisuke.database.FollowingTable;
 public class AnisukeIntentService extends IntentService {
 
 	// The actions for this service.
-	public static final String ACTION_CREATE_SERIES = "actionCreateSeries";
-	public static final String ACTION_DELETE_SERIES = "actionDeleteSeries";
-	public static final String ACTION_UPDATE_SERIES = "actionUpdateSeries";
+	public static final String ACTION_CREATE_SERIES			= "actionCreateSeries";
+	public static final String ACTION_DELETE_SERIES			= "actionDeleteSeries";
+	public static final String ACTION_UPDATE_SERIES			= "actionUpdateSeries";
+	public static final String ACTION_ADD_TO_BUCKET 		= "actionAddToBucket";
+	public static final String ACTION_DELETE_FROM_BUCKET	= "actionDeleteFromBucket";
 
 	public AnisukeIntentService() {
 		super("AnisukeIntentService");
@@ -35,13 +37,23 @@ public class AnisukeIntentService extends IntentService {
 			onActionDeleteSeries(intent);
 		} else if (ACTION_UPDATE_SERIES == action) {
 			onActionUpdateSeries(intent);
+		} else if (ACTION_ADD_TO_BUCKET == action) {
+//			onActionAddToBucket(intent);
+		} else if (ACTION_DELETE_FROM_BUCKET == action) {
+
 		}
 	}
+
+//	private void onActionAddToBucket(Intent intent) {
+//		String title = intent.getStringExtra(FollowingTable.COL_TITLE);
+//		String episode = intent.getStringExtra(FollowingTable.COL_EPISODE);
+//
+//
+//	}
 
 	private void onActionCreateSeries(Intent intent) {
 		String title = intent.getStringExtra(FollowingTable.COL_TITLE);
 		String episode = intent.getStringExtra(FollowingTable.COL_EPISODE);
-		int bucket = intent.getIntExtra(FollowingTable.COL_BUCKET, 0);
 
 		if (TextUtils.isEmpty(title) && TextUtils.isEmpty(episode))
 			return;
@@ -49,7 +61,6 @@ public class AnisukeIntentService extends IntentService {
 		ContentValues values = new ContentValues();
 		values.put(FollowingTable.COL_TITLE, title);
 		values.put(FollowingTable.COL_EPISODE, episode);
-		values.put(FollowingTable.COL_BUCKET, bucket);
 
 		ContentResolver resolver = getContentResolver();
 		resolver.insert(AnisukeContentProvider.CONTENT_URI_FOLLOWING, values);
@@ -72,12 +83,10 @@ public class AnisukeIntentService extends IntentService {
 
 		String title = intent.getStringExtra(FollowingTable.COL_TITLE);
 		String episode = intent.getStringExtra(FollowingTable.COL_EPISODE);
-		int bucket = intent.getIntExtra(FollowingTable.COL_BUCKET, 0);
 
 		ContentValues values = new ContentValues();
 		values.put(FollowingTable.COL_TITLE, title);
 		values.put(FollowingTable.COL_EPISODE, episode);
-		values.put(FollowingTable.COL_BUCKET, bucket);
 
 		Uri updateUri = ContentUris.withAppendedId(AnisukeContentProvider.CONTENT_URI_FOLLOWING, seriesId);
 		ContentResolver resolver = getContentResolver();

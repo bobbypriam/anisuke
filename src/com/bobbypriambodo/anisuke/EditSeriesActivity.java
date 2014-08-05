@@ -28,7 +28,6 @@ public class EditSeriesActivity extends Activity implements LoaderManager.Loader
 	private static final int DONE_ID = Menu.FIRST;
 
 	private long mSeriesId = -1;
-	private int mBucket = 0;
 
 	private EditText mTitle;
 	private EditText mEpisode;
@@ -77,7 +76,6 @@ public class EditSeriesActivity extends Activity implements LoaderManager.Loader
 		Intent intent = new Intent(this, AnisukeIntentService.class);
 		intent.putExtra(FollowingTable.COL_TITLE, mTitle.getText().toString());
 		intent.putExtra(FollowingTable.COL_EPISODE, mEpisode.getText().toString());
-		intent.putExtra(FollowingTable.COL_BUCKET, mBucket);
 
 		if (mSeriesId == -1) {
 			intent.setAction(AnisukeIntentService.ACTION_CREATE_SERIES);
@@ -103,7 +101,6 @@ public class EditSeriesActivity extends Activity implements LoaderManager.Loader
 		if (cursor != null && cursor.moveToFirst()) {
 			mTitle.setText(cursor.getString(cursor.getColumnIndex(FollowingTable.COL_TITLE)));
 			mEpisode.setText(cursor.getString(cursor.getColumnIndex(FollowingTable.COL_EPISODE)));
-			mBucket = cursor.getInt(cursor.getColumnIndex(FollowingTable.COL_BUCKET));
 		}
 	}
 
