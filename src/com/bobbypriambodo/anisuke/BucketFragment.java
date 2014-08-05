@@ -11,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.*;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.bobbypriambodo.anisuke.adapter.AnisukeCursorAdapter;
 import com.bobbypriambodo.anisuke.contentprovider.AnisukeContentProvider;
@@ -48,8 +49,17 @@ public class BucketFragment extends ListFragment implements LoaderManager.Loader
 	}
 
 	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		l.showContextMenuForChild(v);
+	}
+
+	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
+		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex("title")));
 		menu.add(0, DELETE_ID, 0, R.string.menu_delete_bucket);
 	}
 

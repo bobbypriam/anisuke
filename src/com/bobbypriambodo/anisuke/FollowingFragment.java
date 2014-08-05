@@ -53,12 +53,15 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		editSeries(id);
+		l.showContextMenuForChild(v);
 	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+		Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
+		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex("title")));
 		menu.add(0, BUCKET_ID, 0, R.string.menu_bucket);
 		menu.add(0, EDIT_ID, 1, R.string.menu_edit);
 		menu.add(0, DELETE_ID, 2, R.string.menu_delete);
