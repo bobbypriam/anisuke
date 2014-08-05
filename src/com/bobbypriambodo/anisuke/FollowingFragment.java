@@ -70,7 +70,7 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 		long id = info.id;
 		switch (item.getItemId()) {
 			case BUCKET_ID:
-				// addToBucket(id);
+				addToBucket(id);
 				return true;
 			case EDIT_ID:
 				editSeries(id);
@@ -80,6 +80,15 @@ public class FollowingFragment extends ListFragment implements LoaderManager.Loa
 				return true;
 		}
 		return super.onContextItemSelected(item);
+	}
+
+	private void addToBucket(long id) {
+		Intent i = new Intent(mCtx, AnisukeIntentService.class);
+		i.putExtra(FollowingTable.COL_ID, id);
+		i.setAction(AnisukeIntentService.ACTION_ADD_TO_BUCKET);
+		mCtx.startService(i);
+
+		Toast.makeText(mCtx, "Successfully added to bucket.", Toast.LENGTH_SHORT).show();
 	}
 
 	private void editSeries(long id) {
