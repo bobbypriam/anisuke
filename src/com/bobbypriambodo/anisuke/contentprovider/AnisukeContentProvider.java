@@ -121,7 +121,7 @@ public class AnisukeContentProvider extends ContentProvider {
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
-		String id, tableName;
+		String id, tableName = "";
 		switch (URI_MATCHER.match(uri)) {
 			case FOLLOWING_ID:
 				id = uri.getLastPathSegment();
