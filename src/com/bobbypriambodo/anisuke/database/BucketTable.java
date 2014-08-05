@@ -1,15 +1,15 @@
 package com.bobbypriambodo.anisuke.database;
 
-/**
- * @author Bobby Priambodo
- */
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class FollowingTable {
+/**
+ * @author Bobby Priambodo
+ */
+public class BucketTable {
 
 	/** Table definitions */
-	public static final String TABLE_NAME		= "following";
+	public static final String TABLE_NAME		= "bucket";
 	public static final String COL_ID			= "_id";
 	public static final String COL_TITLE		= "title";
 	public static final String COL_EPISODE		= "episode";

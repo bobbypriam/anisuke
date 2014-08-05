@@ -20,10 +20,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		FollowingTable.onCreate(db);
+		BucketTable.onCreate(db);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
 		FollowingTable.onUpgrade(database, oldVersion, newVersion);
+		BucketTable.onUpgrade(database, oldVersion, newVersion);
 	}
 }
